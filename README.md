@@ -17,7 +17,7 @@ path needs to be prefixed. The build process may take several (around 5 to 10) m
 
 Having built the Docker image, the Docker container may be run using e.g.
 
-    sudo docker run -p 8888:8888 hyperhdg_docker
+    sudo docker run -p 8888:8888 <tag>
 
 resulting in an output similar to
 
