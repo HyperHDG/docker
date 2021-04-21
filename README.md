@@ -48,7 +48,7 @@ Importantly, the full output is displayed approximately 10 seconds after hitting
 also the time, the notebook takes to start, so to speak. You will need the last given URL and token
 to access the notebook. Thus,
 
-> URL: http://127.0.0.1:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
+> URL: http://127.0.0.1:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430  
 > token: 9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
 
 You can access the notebook using the full URL or using `http://127.0.0.1:8888/` and inserting the
