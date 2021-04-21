@@ -1,44 +1,62 @@
+####################################################################################################
+# Dockerfile for a docker container including a Jupyter notebook that can deal with Python and C++
+# codes. The notebook is run on a local Ubuntu and can be variably adapted.
+#
+# Author: Andreas Rupp, Heidelberg University, 2021.
+####################################################################################################
+
+
+## Set the image this docker is based on and make build process non-interactive.
 FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
-## Variables/arguments that can be set by the user.
+
+## Variable/argument that can be set by the user.
 ARG INIT_COMMAND
-ARG CXX
 
-## Setting CXX to be the default C++ compiler of the docker.
-ENV CXX=$CXX
 
-## Bring system into a consistent initial state.
+## Bring system into a consistent initial state and install fundamental packages.
 RUN apt-get update && apt-get full-upgrade -y && apt-get autoremove -y
 RUN apt-get install -y apt-utils wget
 
-## Install packages needed for HyperHDG.
-RUN apt-get install -y git doxygen graphviz cmake cython3 libblas-dev liblapack-dev ipython3 $CXX
-RUN apt-get install -y libgl1-mesa-dev xvfb
-# RUN apt-get install -y python3-dev python3-numpy python3-scipy python3-pip
 
 ## Define global variables of the docker.
-RUN mkdir src src/volatile
+RUN mkdir src
 WORKDIR src/
-COPY . ./volatile
+COPY . .
 
-## Install jupyter-xeus/xeus-cling.
+
+## Setup Jupyter Notebook that can deal with C++ and Python using Miniconda.
+
+# Install packages needed to fix visualization issues of Anaconda's Python version.
+RUN apt-get install -y libgl1-mesa-dev xvfb
+
+# Set path to Miniconda installation.
 ENV PATH="/root/miniconda/bin:$PATH"
+
 # Download and install the latest version of Miniconda.
 RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 RUN bash ~/miniconda.sh -b -p ~/miniconda && rm ~/miniconda.sh
-# Install numpy, scipy, xeus-cling and jupyter.
-RUN conda create -n cling && conda install -c conda-forge numpy pip scipy xeus-cling jupyter pyvista
+
+# Install pip, numpy, scipy, xeus-cling, jupyter, and pyvista. Afterwards, install ipyvtk-simple.
+RUN conda install -c conda-forge pip numpy scipy xeus-cling jupyter pyvista
 RUN pip install ipyvtk-simple
 
-## Fix pyvista and Miniconda issues with jupyter.
+# Define environments needed to fix the visualization issues of Anaconda's Python.
 ENV DISPLAY=:99.0
 ENV PYVISTA_OFF_SCREEN=true
 ENV PYVISTA_USE_IPYVTK=true
 
-## Run some initializing command.
-RUN $INIT_COMMAND
 
-## Define the purpose of the docker container.
-CMD which Xvfb && Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & sleep 3 \
-  && jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root
+## Run some initializing command.
+RUN eval $INIT_COMMAND
+
+
+## Define the command for starting the docker container: First line fixes visualization issues.
+CMD which Xvfb && Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & \
+  sleep 5  && jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root & \
+  sleep 10 && echo "\nPlease, save the last shown URL and especially its token!" && \
+  echo "If you stop and re-start the container, you will need URL and/or token to login." && \
+  echo "Alternatively, you can set a password and only have to remember it and the URL.\n" && \
+  echo "Note that Ctrl+C does not work, although this is stated differently above.\n" && \
+  echo "You can use the Jupyter notebook by visiting the last displayed URL." && sleep infinity
