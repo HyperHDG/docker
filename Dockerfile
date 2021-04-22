@@ -15,11 +15,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG INIT_COMMAND
 
 
-## Bring system into a consistent initial state and install fundamental packages.
-RUN apt-get update && apt-get full-upgrade -y && apt-get autoremove -y
-RUN apt-get install -y apt-utils wget
-
-
 ## Define global variables of the docker.
 RUN mkdir src
 WORKDIR src/
@@ -28,19 +23,19 @@ COPY . .
 
 ## Setup Jupyter Notebook that can deal with C++ and Python using Miniconda.
 
-# Install packages needed to fix visualization issues of Anaconda's Python version.
-RUN apt-get install -y libgl1-mesa-dev xvfb
+# Install packages needed to install Miniconda and fix its visualization issues.
+RUN apt-get update && apt-get install -y wget libgl1-mesa-dev xvfb && rm -rf /var/lib/apt/lists/*
 
 # Set path to Miniconda installation.
 ENV PATH="/root/miniconda/bin:$PATH"
 
 # Download and install the latest version of Miniconda.
-RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-RUN bash ~/miniconda.sh -b -p ~/miniconda && rm ~/miniconda.sh
+RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh \
+  && bash ~/miniconda.sh -b -p ~/miniconda && rm ~/miniconda.sh
 
 # Install pip, numpy, scipy, xeus-cling, jupyter, and pyvista. Afterwards, install ipyvtk-simple.
-RUN conda install -c conda-forge pip numpy scipy xeus-cling jupyter pyvista
-RUN pip install ipyvtk-simple
+RUN conda install -c conda-forge pip numpy scipy xeus-cling jupyter pyvista \
+  && pip install ipyvtk-simple
 
 # Define environments needed to fix the visualization issues of Anaconda's Python.
 ENV DISPLAY=:99.0
@@ -49,7 +44,7 @@ ENV PYVISTA_USE_IPYVTK=true
 
 
 ## Run some initializing command.
-RUN eval $INIT_COMMAND
+RUN apt-get update && eval $INIT_COMMAND && rm -rf /var/lib/apt/lists/*
 
 
 ## Define the command for starting the docker container: First line fixes visualization issues.
