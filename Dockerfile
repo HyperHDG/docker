@@ -35,7 +35,7 @@ RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 
 # Install pip, numpy, scipy, xeus-cling, jupyter, and pyvista. Afterwards, install ipyvtk-simple.
 RUN conda install -c conda-forge pip numpy scipy xeus-cling jupyter pyvista \
-  && pip install ipyvtk-simple
+  && pip install ipyvtk-simple && conda clean --all -f -y
 
 # Define environments needed to fix the visualization issues of Anaconda's Python.
 ENV DISPLAY=:99.0
@@ -44,7 +44,7 @@ ENV PYVISTA_USE_IPYVTK=true
 
 
 ## Run some initializing command.
-RUN apt-get update && eval $INIT_COMMAND && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && eval $INIT_COMMAND && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 ## Define the command for starting the docker container: First line fixes visualization issues.
