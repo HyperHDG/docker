@@ -8,17 +8,11 @@
 
 ## Set the image this docker is based on and make build process non-interactive.
 FROM ubuntu:latest
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
 
 ## Variable/argument that can be set by the user.
 ARG INIT_COMMAND
-
-
-## Define global variables of the docker.
-RUN mkdir src
-WORKDIR src/
-COPY . .
 
 
 ## Setup Jupyter Notebook that can deal with C++ and Python using Miniconda.
@@ -43,6 +37,12 @@ ENV PYVISTA_OFF_SCREEN=true
 ENV PYVISTA_USE_IPYVTK=true
 
 
+## Copy local files to Docker image.
+RUN mkdir src
+WORKDIR src/
+COPY . .
+
+
 ## Run some initializing command.
 RUN apt-get update && eval $INIT_COMMAND && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -54,4 +54,4 @@ CMD which Xvfb && Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & \
   echo "If you stop and re-start the container, you will need URL and/or token to login." && \
   echo "Alternatively, you can set a password and only have to remember it and the URL.\n" && \
   echo "Note that Ctrl+C does not work, although this is stated differently above.\n" && \
-  echo "You can use the Jupyter notebook by visiting the last displayed URL." && sleep infinity
+  echo "You can use the Jupyter notebook by visiting the last displayed URL.\n" && sleep infinity
