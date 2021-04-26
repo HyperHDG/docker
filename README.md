@@ -23,33 +23,41 @@ resulting in an output similar to
 
 ````
 /usr/bin/Xvfb
-[I 14:04:24.615 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
-[I 14:04:24.773 NotebookApp] Serving notebooks from local directory: /src
-[I 14:04:24.773 NotebookApp] Jupyter Notebook 6.3.0 is running at:
-[I 14:04:24.773 NotebookApp] http://f3239cc6d4ce:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
-[I 14:04:24.773 NotebookApp]  or http://127.0.0.1:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
-[I 14:04:24.774 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
-[C 14:04:24.776 NotebookApp] 
+[I 2021-04-26 15:56:33.451 ServerApp] jupyterlab | extension was successfully linked.
+[I 2021-04-26 15:56:33.460 ServerApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/jupyter_cookie_secret
+[I 2021-04-26 15:56:33.618 ServerApp] nbclassic | extension was successfully linked.
+[I 2021-04-26 15:56:33.654 LabApp] JupyterLab extension loaded from /root/miniconda/lib/python3.8/site-packages/jupyterlab
+[I 2021-04-26 15:56:33.654 LabApp] JupyterLab application directory is /root/miniconda/share/jupyter/lab
+[I 2021-04-26 15:56:33.656 ServerApp] jupyterlab | extension was successfully loaded.
+[I 2021-04-26 15:56:33.660 ServerApp] nbclassic | extension was successfully loaded.
+[I 2021-04-26 15:56:33.660 ServerApp] Serving notebooks from local directory: /src
+[I 2021-04-26 15:56:33.660 ServerApp] Jupyter Server 1.6.4 is running at:
+[I 2021-04-26 15:56:33.660 ServerApp] http://60d03d07f085:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
+[I 2021-04-26 15:56:33.660 ServerApp]     http://127.0.0.1:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
+[I 2021-04-26 15:56:33.660 ServerApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 2021-04-26 15:56:33.663 ServerApp]
     
-    To access the notebook, open this file in a browser:
-        file:///root/.local/share/jupyter/runtime/nbserver-8-open.html
+    To access the server, open this file in a browser:
+        file:///root/.local/share/jupyter/runtime/jpserver-7-open.html
     Or copy and paste one of these URLs:
-        http://f3239cc6d4ce:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
-     or http://127.0.0.1:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
+        http://60d03d07f085:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
+        http://127.0.0.1:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
 
 Please, save the last shown URL and especially its token!
 If you stop and re-start the container, you will need URL and/or token to login.
 Alternatively, you can set a password and only have to remember it and the URL.
 
 Note that Ctrl+C does not work, although this is stated differently above.
+
+You can use the Jupyter notebook by visiting the last displayed URL.
 ````
 
 Importantly, the full output is displayed approximately 10 seconds after hitting enter and this is
 also the time, the notebook takes to start, so to speak. You will need the last given URL and token
 to access the notebook. Thus,
 
-> URL: http://127.0.0.1:8888/?token=9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430  
-> token: 9bf95d4356b260462c76ff00d0fbbbd890d28a5ddc42c430
+> URL: http://127.0.0.1:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221  
+> token: 9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
 
 You can access the notebook using the full URL or using `http://127.0.0.1:8888/` and inserting the
 token. Alternatively, you can use the token to set a password and use the password in the future.
