@@ -9,7 +9,7 @@ The docker container can be build (on Linux) using a comand like
 
     sudo docker build --build-arg INIT_COMMAND="<command>" -f <path> -t <tag> .
 
-Here, `command` can be some bash command such as `apt-get install -y git && setup.sh` (no sudo,
+Here, `<command>` can be some bash command such as `apt-get install -y git && setup.sh` (no sudo,
 since you are root in this phase) installing `git` and executing script `setup.sh`, afterwards. The
 `<path>` is the local path to the `Dockerfile` and `<tag>` defines a tag for he Docker image. Note
 that `setup.sh` needs to be located in the directory in which the command is executed or its local
@@ -54,7 +54,7 @@ You can use the Jupyter notebook by visiting the last displayed URL.
 
 Importantly, the full output is displayed approximately 10 seconds after hitting enter and this is
 also the time, the notebook takes to start, so to speak. You will need the last given URL and token
-to access the notebook. Thus,
+to access the notebook. That is, in the above example
 
 > URL: http://127.0.0.1:8888/lab?token=9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221  
 > token: 9a34da197309b509955b172ef545d5cf0fefcc1c8eccd221
